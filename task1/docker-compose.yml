@@ -1,4 +1,4 @@
-version: '2'
+version: '3.7'
 
 services:  
   queue:
@@ -7,7 +7,6 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: 'user'
       RABBITMQ_DEFAULT_PASS: 'pswd'
-#    hostname: queue
     ports:
       - "5672:5672"
   
@@ -17,6 +16,12 @@ services:
     links:
       - queue
 #    timeout: 30s
+    healthcheck:
+      # test: ["CMD"]
+#      test: ["CMD_SHELL", "curl -f amqp://user:pswd@queue:5672"]
+      interval: 30s
+      timeout: 10s
+      # retries: 5
   
   producer:
     build: ./Producer
@@ -24,10 +29,9 @@ services:
     links:
       - queue
 #    timeout: 30s
+    healthcheck:
+      # test: ["CMD"]
+#      test: ["CMD_SHELL", "curl -f amqp://user:pswd@queue:5672"]
+      interval: 30s
+      timeout: 10s
 
-# promprog_default 
-
-# networks:
-#   default:
-#     external:
-#       name: localhost
